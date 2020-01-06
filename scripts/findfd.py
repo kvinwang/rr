@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+
+"""
+Usage: rr dump -m | ./findfd.py
+
+"""
+
 import re
 import codecs
 import struct
