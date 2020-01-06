@@ -249,11 +249,15 @@ static void dump_events_matching(TraceReader& trace, const DumpFlags& flags,
         }
       }
 
-      TraceReader::RawDataMetadata data;
-      while (process_raw_data && trace.read_raw_data_metadata_for_frame(data)) {
+      TraceReader::RawData data;
+      while (process_raw_data && trace.read_raw_data_for_frame(data)) {
         if (flags.dump_recorded_data_metadata) {
-          fprintf(out, "  { tid:%d, addr:%p, length:%p }\n", data.rec_tid,
-                  (void*)data.addr.as_int(), (void*)data.size);
+          fprintf(out, "  { tid:%d, addr:%p, data:", data.rec_tid,
+                  (void*)data.addr.as_int());
+          for (auto i: data.data) {
+            fprintf(out, "%02x", i);
+          }
+          fprintf(out, " }\n");
         }
       }
       if (!flags.raw_dump) {
